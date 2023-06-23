@@ -1,0 +1,56 @@
+.addquotation{
+    .subtotal_section{
+        .discount{
+            .adddiscount{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 15px;
+                .form-control{
+                    margin-right: 15px;
+                    appearance: auto;
+                }
+                select{
+                    &.form-control{
+                        width: 120px;
+                        height: 38px;
+                    }
+                }
+                .delete_box{
+                    cursor: pointer;
+                    font-size: 18px;
+                }
+            }
+        }
+        .tax{
+            .tax_select{
+                padding-top: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            select{
+                &.form-control{
+                    margin-right: 15px;
+                    appearance: auto;
+                }
+            }
+            .delete_box{
+                cursor: pointer;
+                font-size: 18px;
+            }
+            .add_tax{
+                padding-top: 15px;
+            }
+            .add_tax_se{
+                padding-top: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .form-control{
+                    margin-right: 15px;
+                }
+            }
+        }
+    }
+}

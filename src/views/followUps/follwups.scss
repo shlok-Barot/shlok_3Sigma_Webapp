@@ -1,0 +1,47 @@
+.followups-section-1 {
+  .table {
+    thead {
+      background: #fff;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+        0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+      border-radius: 0.75rem;
+    }
+    tbody {
+      tr {
+        background: #fff;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+          0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 0.75rem;
+        cursor: pointer;
+        td {
+          .btn {
+            padding: 0 7px;
+            font-size: 19px;
+            line-height: 20px;
+            vertical-align: text-bottom;
+            color: #3faefd;
+            &:focus,
+            &:hover {
+              background-color: #3faefd;
+            }
+          }
+          i {
+            font-size: 19px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+}
+.follwup_drower {
+  .form-container {
+    .form-group {
+      padding-bottom: 15px;
+      .form-control {
+        font-family: "Inter", sans-serif;
+        font-weight: 400;
+      }
+    }
+  }
+}

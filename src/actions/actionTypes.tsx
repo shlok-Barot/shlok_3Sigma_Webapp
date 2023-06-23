@@ -1,0 +1,13 @@
+export const SET_LOGID = "SET_LOGID";
+export const SET_LEADS = "SET_LEADS";
+export const SET_LEADS_LIST = "SET_LEADS_LIST";
+export const SET_PREFERENCES = "SET_PREFERENCES";
+export const SET_ACTIVITIES = "SET_ACTIVITIES";
+export const SET_NOTES = "SET_NOTES";
+export const SET_TASKS = "SET_TASKS";
+export const SET_SELECTED_LEAD = "SET_SELECTED_LEAD";
+export const SET_USER_DETAILS = "SET_USER_DETAILS";
+export const SET_LEADTASK = "SET_LEADTASK";
+export const SET_LEADFILELIST = "SET_LEADFILELIST";
+export const SET_CUSTOMSOURCE = "SET_CUSTOMSOURCE";
+export const SET_LEADNAME = "SET_LEADNAME";

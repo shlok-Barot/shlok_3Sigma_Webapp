@@ -1,0 +1,221 @@
+.main_card{
+    padding: 15px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 0.75rem;
+    .card_header{
+        // padding-bottom: 10px;
+        h4{
+            display: block;
+            font-size: 20px;
+            line-height: 24px;
+            font-weight: 600;
+            color: #000;
+            margin: 0;
+            padding-bottom: 10px;
+        }
+        span{
+            display: inline-block;
+            padding: 6px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            background: #EBF0F4;
+            color: #000;
+            border: 0;
+            margin-right: 10px;
+        }
+    }
+    .card_footer{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .button_section{
+            .btn{
+                border: 0;
+                padding: 5px 0px;
+                i{
+                    font-size: 18px;
+                }
+            }
+         
+        }
+    }
+}
+.content_page{
+    background: #EBF0F4;
+
+    .content_tab{
+        .nav-tabs{
+            border: 0;
+            padding-bottom: 15px;
+            .nav-item{
+                margin: 0 15px;
+                .nav-link{
+                    background: #fff;
+                    color: #000;
+                    font-size: 18px;
+                    line-height: 22px;
+                    font-weight: 400;
+                    padding: 8px 20px;
+                    border-radius: 5px;
+                    border: 0;
+                    text-decoration: none;
+                    cursor: pointer;
+                    &.active{
+                        background: rgba(63, 174, 253, 0.82);
+                        border: 0;
+                    }
+                    &:hover{
+                        text-decoration: none;
+                        background: rgba(63, 174, 253, 0.82);
+                    }
+                }
+            }
+        }
+    }
+}
+.addcontent_form{
+    .form-container{
+        .form-group{
+            padding-bottom: 15px;
+            h5{
+                font-size: 14px;
+                padding-bottom: 10px;
+                font-weight: 400;
+            }
+            .addtag_section{
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                .addtag{
+                    margin-left: -5px;
+                    margin-right: -5px;
+                    .tag_btn{
+                        padding: 10px 15px;
+                        font-size: 14px;
+                        border-radius: 5px;
+                        background: #EBF0F4;
+                        color: #000;
+                        border: 0;
+                        margin: 0 5px 15px;
+                    }
+                }
+                .addtag_btn{
+                    border: 1px solid  rgba(63, 174, 253, 0.82);
+                    background: transparent;
+                    color:  rgba(63, 174, 253, 1);
+                    padding: 10px 15px;
+                    font-size: 14px;
+                    border-radius: 5px;
+                    margin-left: 15px;
+                    white-space: nowrap;
+                }
+               
+            }
+            .location_select{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 0.25rem;
+                padding-bottom: 15px;
+            }
+            .map_view{
+                margin-top: 0.25rem;
+                width: 100%;
+            }
+            .form_sec{
+                padding-bottom: 15px;
+                label{
+                    margin-bottom: 0.25rem;
+                }
+                .auto_comp{
+                    position: relative;
+                    .autocomplete-dropdown-container{
+                        position: absolute;
+                        z-index: 9;
+                        // background: #fff;
+                        // box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+                        // border-radius: 0.75rem;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+.share_modal{
+    width: 100%;
+    .content_tab{
+        width: 100%;
+        ul{
+            display: flex;
+            border-bottom: 0;
+            padding-bottom: 10px;
+            li{
+                &.nav-item{
+                    cursor: pointer;
+                    margin-left: 0;
+                    
+                    &:first-child{
+                        .nav-link{
+                            border-radius: 5px 0 0 5px;
+                            border-right: 0;
+                        }
+                    }
+                    &:nth-child(2){
+                        .nav-link{
+                            border-right: 0;
+                        }
+                    }
+                    &:last-child{
+                        .nav-link{
+                            border-radius: 0 5px 5px 0;
+                            border-left: 0;
+                        }
+                    }
+                    .nav-link{
+                        border: 1px solid rgba(63, 174, 253, 0.82);
+                        border-radius: 0;
+                        padding: 9px 13px;
+                        color: rgba(63, 174, 253, 1);
+                        &:hover{
+                            text-decoration: none;
+                        }
+                        &.active{
+                            background-color: rgba(63, 174, 253, 1);
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .share_contetnt{
+        .share_box{
+            .topping{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 14px;
+                line-height: 20px;
+                padding-bottom: 10px;
+                padding-top: 10px;
+                border-bottom: 1px solid #e5e5ea;
+                input{
+                    width: 20px;
+                    height: 20px;
+                    border-color: #e5e5ea;
+                }
+                &:last-child{
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+   .share_btn{
+    text-transform: uppercase;
+   }
+}
