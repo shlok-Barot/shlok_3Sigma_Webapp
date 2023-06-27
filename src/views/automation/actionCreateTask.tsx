@@ -1,53 +1,44 @@
-import moment from "moment";
 import React, { PropsWithChildren, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { repeatOptions } from "../../utils/globalConstants";
 import ErrorText from "../../components/errorText";
 import * as yup from "yup";
 import update from "immutability-helper";
-import { createNewTask, updateTaskbyId } from "../../services/taskService";
-import { toast } from "react-toastify";
-import { setLeadTaskList } from "../../actions/actions";
 
 interface taskTypeI {
   type: string;
   repeat: string;
   assignedTo: string;
   notes: string;
-  leadIds: Array<string>;
 }
 interface Props {
-  leadIds: Array<{ id: string }>;
-  updateModalValue: any;
-  action: string;
+  addUpdateModalValue: any;
+  onSaveDrawerClose: (obj: any) => void;
 }
 
 const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
-  leadIds,
-  updateModalValue,
-  action,
+  addUpdateModalValue,
+  onSaveDrawerClose,
 }) => {
+  const StoreData = useSelector((state: any) => {
+    return state?.rootReducers;
+  });
+
   const [taskList, setTaskList] = useState<Array<any>>([]);
   const [taskAssignTo, setTaskAssignTo] = useState<Array<any>>([]);
-  const [isCompleted, setIsCompleted] = useState(false);
 
   const [taskData, setTaskData] = useState<taskTypeI>({
     type: "",
     repeat: "",
     assignedTo: "",
     notes: "",
-    leadIds: [leadIds[0]?.id],
   });
 
   const [errors, setErrors] = useState({
     type: "",
     repeat: "",
-    assignedTo: "",
+    // assignedTo: "",
     notes: "",
-  });
-  const dispatch = useDispatch();
-  const StoreData = useSelector((state: any) => {
-    return state?.rootReducers;
   });
 
   useEffect(() => {
@@ -83,22 +74,20 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
   }, []);
 
   useEffect(() => {
-    if (Object.values(updateModalValue).length > 0) {
+    if (Object.values(addUpdateModalValue).length > 0) {
       setTaskData({
-        type: updateModalValue.type,
-        notes: updateModalValue.notes,
-        assignedTo: updateModalValue?.assignedTo[0]?._id,
-        repeat: updateModalValue.repeat,
-        leadIds: [leadIds[0]?.id],
+        type: addUpdateModalValue.type,
+        notes: addUpdateModalValue.notes,
+        assignedTo: addUpdateModalValue?.assignedTo[0]?._id,
+        repeat: addUpdateModalValue.repeat,
       });
-      setIsCompleted(updateModalValue.isCompleted);
     }
-  }, [updateModalValue]);
+  }, [addUpdateModalValue]);
 
   let schema = yup.object().shape({
     type: yup.string().required("Task Type is required"),
     repeat: yup.string().required("Repeat is required"),
-    assignedTo: yup.string().required("Task Assigned is required"),
+    // assignedTo: yup.string().required("Task Assigned is required"),
     notes: yup.string().max(200, "Max 200 characters are allowed"),
   });
 
@@ -124,57 +113,15 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
       abortEarly: false,
     });
     if (isFormValid) {
-      let assignData = [];
-      assignData.push(taskData.assignedTo);
-      let tempObj: any = {};
-      if (action === "Add") {
-        tempObj = {
-          leadIds: taskData.leadIds,
-          ...(taskData.notes.length > 0 && {
-            notes: taskData.notes,
-          }),
-          type: taskData.type,
-          extraDetails: {},
-          assignedTo: assignData,
-          repeat: taskData.repeat !== "repeat" ? taskData.repeat : "",
-        };
-      } else {
-        tempObj = {
-          ...(taskData.notes.length > 0 && {
-            notes: taskData.notes,
-          }),
-          type: taskData.type,
-          extraDetails: {},
-          assignedTo: assignData,
-          repeat: taskData.repeat !== "repeat" ? taskData.repeat : "",
-          isCompleted: isCompleted,
-        };
-      }
-      try {
-        let response: any = "";
-        if (action === "Add") {
-          response = await createNewTask(tempObj);
-        } else {
-          response = await updateTaskbyId(updateModalValue._id, tempObj);
-        }
-        if (response && response.status) {
-          const responseData = response?.data;
-          const tempArray = [...StoreData?.leadTask?.leadTask];
-          if (action === "Add") {
-            tempArray?.unshift(responseData?.data);
-          } else {
-            const tempData = tempArray.findIndex(
-              (x) => x._id == responseData.data._id
-            );
-            tempArray.splice(tempData, 1, responseData.data);
-          }
-          dispatch(setLeadTaskList(tempArray));
-          toast.success(responseData?.message);
-          resetFormvalue();
-        }
-      } catch (err) {
-        toast.error("Error while creating new task");
-      }
+      let tempObj = {
+        type: taskData.type,
+        repeat: taskData.repeat,
+        ...(taskData.assignedTo.length > 0 && {
+          assignedTo: taskData.assignedTo,
+        }),
+        notes: taskData.notes,
+      };
+      onSaveDrawerClose(tempObj);
     } else {
       schema.validate(taskData, { abortEarly: false }).catch((err) => {
         const errors = err.inner.reduce(
@@ -200,9 +147,7 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
       repeat: "",
       assignedTo: "",
       notes: "",
-      leadIds: [leadIds[0]?.id],
     });
-    setIsCompleted(false);
   };
 
   return (
@@ -264,11 +209,11 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
                 );
               })}
             </select>
-            {errors.assignedTo ? (
+            {/* {errors.assignedTo ? (
               <ErrorText message={errors?.assignedTo} />
             ) : (
               ""
-            )}
+            )} */}
           </div>
           <div className="form-group">
             <label className="form-label">Note</label>
@@ -282,21 +227,6 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
             ></textarea>
             {errors.notes ? <ErrorText message={errors?.notes} /> : ""}
           </div>
-          {action === "Edit" && (
-            <div className="form-group">
-              <input
-                type="checkbox"
-                checked={isCompleted}
-                id="isComplete"
-                name="isComplete"
-                onChange={() => setIsCompleted(!isCompleted)}
-              />
-              &nbsp;&nbsp;
-              <label htmlFor="isComplete" className="form-label">
-                Is Completed
-              </label>
-            </div>
-          )}
         </div>
         <div className="auto_form_btn">
           <button

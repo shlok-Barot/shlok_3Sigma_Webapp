@@ -106,76 +106,100 @@ export const automationActionData = [
   {
     name: "Create task",
     value: "create_task",
+    isSelected:false
   },
   {
     name: "Change status",
-    value: "change_status",
+    value: "status_change",
+    isSelected:false
   },
   {
     name: "Change Label",
-    value: "change_label",
+    value: "label_change",
+    isSelected:false
   },
   {
     name: "Move to list",
     value: "move_to_list",
+    isSelected:false
   },
   {
     name: "Copy to list",
     value: "copy_to_list",
+    isSelected:false
   },
   {
     name: "Send notification",
-    value: "send_notification",
+    value: "push_notification",
+    isSelected:false
   },
   {
     name: "Assign lead",
     value: "assign_lead",
+    isSelected:false
   },
   {
     name: "Wait",
     value: "wait",
+    isSelected:false
   },
 ];
 
 export const automationWhenTriggerData = [
   {
     name: "New lead created",
-    value: "new_lead_created",
+    value: "create_lead",
   },
   {
     name: "Lead is edited",
-    value: "lead_is_edited",
+    value: "edit_lead",
   },
   {
     name: "Lead status changes",
-    value: "lead_status_changes",
+    value: "status_change",
   },
   {
-    name: "View on file",
-    value: "view_on_file",
+    name: "Lead label changes",
+    value: "label_change",
   },
   {
-    name: "View on page",
-    value: "view_on_page",
+    name: "View page",
+    value: "view_page",
+  },
+  {
+    name: "View file",
+    value: "view_file",
   },
   {
     name: "Quotation is created",
-    value: "quotation_is_created",
+    value: "create_quotation",
   },
   {
-    name: "New task created",
-    value: "new_task_created",
+    name: "Quotation is Edited",
+    value: "edit_quotation",
   },
   {
-    name: "Task status changes",
-    value: "task_status_changes",
+    name: "Create task",
+    value: "create_task",
+  },
+  {
+    name: "Edit task",
+    value: "edit_task",
   },
   {
     name: "New activity created",
-    value: "new_activity_created",
+    value: "create_activity",
   },
   {
-    name: "Call activities",
-    value: "call_activities",
+    name: "Create incoming activity",
+    value: "create_incoming_activity",
+  },
+  {
+    name: "Create outgoing activity",
+    value: "create_outgoing_activity",
+  },
+  {
+    name: "Create miscalled activity",
+    value: "create_miscalled_activity",
   },
 ];

@@ -4269,11 +4269,23 @@ hr.half-width {
   font-family: "Gilroy-Bold";
   color: #000;
 }
+.auto_rule_form .and {
+  font-size: 14px;
+  font-family: "Gilroy-Bold";
+  color: #75787A;
+}
+.auto_rule_form .and_source {
+  font-size: 18px;
+  font-family: "Gilroy-Bold";
+  color: #000;
+  margin-left: 12px;
+}
 .auto_rule_form input {
   border-radius: 10px;
   border: none;
   margin-bottom: 12px;
   margin-top: 4px;
+  height: 42px;
 }
 .auto_rule_form input:focus {
   border: none;
@@ -4319,6 +4331,19 @@ hr.half-width {
   background-image: url("../img/selectDown.png");
   background-size: 18px;
   margin: 8px 40px;
+  margin-right: 20px;
+  cursor: pointer;
+  width: 300px;
+  height: 42px;
+}
+.auto_select .and_select {
+  color: #7f7f7f;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  background-image: url("../img/selectDown.png");
+  background-size: 18px;
+  margin-left: 15px;
   cursor: pointer;
   width: 300px;
   height: 42px;
@@ -4351,7 +4376,7 @@ hr.half-width {
 .auto_select label {
   margin-top: 15px;
 }
-.action_select{
+.action_select {
   margin-top: 1rem;
 }
 .auto_dot_plus {
@@ -4379,8 +4404,8 @@ hr.half-width {
   margin-top: 4rem;
 }
 .auto_form_btn .btn-primary {
-  background-color: #3A4B86;
-  border-color: #3A4B86;
+  background-color: #3a4b86;
+  border-color: #3a4b86;
   font-family: "Gilroy-Bold";
   font-weight: 700;
   color: #fff !important;
@@ -4392,8 +4417,8 @@ hr.half-width {
   width: 420px;
 }
 .auto_form_btn .btn-primary-save {
-  background-color: #3A4B86;
-  border-color: #3A4B86;
+  background-color: #3a4b86;
+  border-color: #3a4b86;
   font-family: "Gilroy-Bold";
   font-weight: 700;
   color: #fff !important;
@@ -4408,14 +4433,14 @@ hr.half-width {
   height: 24px;
   cursor: pointer;
 }
-.action_select label{
+.action_select label {
   font-size: 18px;
-    font-family: 'Gilroy-Bold';
-    color: #000;
+  font-family: "Gilroy-Bold";
+  color: #000;
 }
 .auto_action_form_btn .btn-primary-save {
-  background-color: #3A4B86;
-  border-color: #3A4B86;
+  background-color: #3a4b86;
+  border-color: #3a4b86;
   font-family: "Gilroy-Bold";
   font-weight: 700;
   color: #fff !important;
@@ -4426,25 +4451,40 @@ hr.half-width {
   width: 100%;
   margin-top: 24rem;
 }
-.auto_action_from{
+.auto_action_from {
   width: 400px !important;
 }
-.auto_action_from .action_lbl{
+.auto_action_from .action_lbl {
   font-size: 20px;
-  font-family: 'Gilroy-Bold';
+  font-family: "Gilroy-Bold";
 }
-.auto_action_from .action_lbl span{
+.auto_action_from .action_lbl span {
   display: block;
   font-size: 14px;
   line-height: 15px;
-  font-family: 'Gilroy-Bold';
-  color: #75787A;
+  font-family: "Gilroy-Bold";
+  color: #75787a;
 }
-.auto_action_from .rs-drawer-header-close{
+.auto_action_from .rs-drawer-header-close {
   display: none;
 }
-.auto_action_from .rs-drawer-title{
+.auto_action_from .rs-drawer-title {
   margin-left: -2rem;
 }
-
+.delay_plus_minus {
+  display: flex;
+}
+.plus_minus {
+  width: 50%;
+  margin: 0 1rem;
+}
+.delay_plus_minus .bi {
+  font-size: 20px;
+  padding-top: 5px;
+  cursor: pointer;
+}
+.disabled_input{
+  background-color: #dddddd !important;
+  cursor: not-allowed !important;
+}
 /* Automation screen Ui Css End */
