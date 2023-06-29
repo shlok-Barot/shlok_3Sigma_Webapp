@@ -6,8 +6,7 @@ import ErrorText from "./errorText";
 import * as yup from "yup";
 import update from "immutability-helper";
 import { createNewTask, updateTaskbyId } from "../services/taskService";
-import { toast } from "react-toastify";
-
+import toast, { Toaster } from "react-hot-toast";
 // import _, { isEmpty } from "lodash";
 
 interface Props {
@@ -504,6 +503,7 @@ const CreateTaskForm: React.FC<PropsWithChildren<Props>> = ({
           </div>
         </div>
       </form>
+      <Toaster />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { toast } from 'react-toastify';
+import toast, { Toaster } from "react-hot-toast";
 import { Card, Col, Container, ListGroup, ListGroupItem, Row } from 'reactstrap';
 import ConfirmationModal from '../../components/confirmationModal';
 import DrawerComponent from '../../components/drawer';
@@ -166,8 +166,10 @@ const CategoryList: React.FC = () => {
                     showModal={showModal}
                     toggleModal={toggleModal}
                     message={'Are you sure you want to delete this category'}
+                    title="Category"
                 />
             </Container>
+            <Toaster />
         </div>
     );
 }

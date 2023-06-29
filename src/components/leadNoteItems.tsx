@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import moment from "moment";
 import copy from "copy-to-clipboard";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 interface leadNoteItemI {
   activity: any;
   key: any;
@@ -50,6 +50,7 @@ const copyData =()=>{
           </h6>
         </div>
       </h6>
+      <Toaster />
     </div>
   );
 };

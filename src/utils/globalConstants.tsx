@@ -139,8 +139,8 @@ export const automationActionData = [
     isSelected:false
   },
   {
-    name: "Wait",
-    value: "wait",
+    name: "Delay",
+    value: "delay",
     isSelected:false
   },
 ];

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChromePicker } from 'react-color';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import toast, { Toaster } from "react-hot-toast";
 import { Row, Col, Container } from 'reactstrap';
 import Header from '../../components/header';
 import { getCategoryDetail, updateCategory } from '../../services/categoryService';
@@ -112,6 +112,7 @@ const EditCategory: React.FC = () => {
                     </Col>
                 </Row>
             </Container>
+            <Toaster />
         </div>
     );
 }

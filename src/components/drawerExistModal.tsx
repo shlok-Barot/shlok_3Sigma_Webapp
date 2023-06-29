@@ -13,22 +13,43 @@ const DrawerExistModal: React.FC<PropsWithChildren<PropsT>> = ({
   handleDrawerClick,
 }) => {
   return (
-    <Modal isOpen={showExitModal} toggle={toggleEditModal}>
+    <Modal
+      className="delete_modal"
+      isOpen={showExitModal}
+      toggle={toggleEditModal}
+    >
       <ModalBody>
-        <div className="alert alert-danger">Are you sure want to exit?</div>
+        <div className="delete_modal_body">
+          <h4>Are you sure you want to exit ?</h4>
+          <div className="delete_div_btn">
+            <Button
+              // variant="default"
+              className="btn delete_btn"
+              onClick={handleDrawerClick}
+            >
+              Ok
+            </Button>
+            <Button // variant="default"
+              className="btn delete_btn"
+              onClick={toggleEditModal}
+            >
+              No
+            </Button>
+          </div>
+        </div>
       </ModalBody>
-      <ModalFooter>
+      {/* <ModalFooter>
         <Button
           variant="danger"
           className="btn-danger"
           onClick={handleDrawerClick}
         >
-          Yes
+          Ok
         </Button>
         <Button variant="default" onClick={toggleEditModal}>
           No
         </Button>
-      </ModalFooter>
+      </ModalFooter> */}
     </Modal>
   );
 };

@@ -5,7 +5,7 @@ import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { useNavigate } from "react-router-dom";
 import { generateOtp, signIn } from "../../services/authServices";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setLogId } from "../../actions/actions";
 import PhoneInput, { CountryData } from "react-phone-input-2";
@@ -235,6 +235,7 @@ const Login: React.FC = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

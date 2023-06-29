@@ -29,7 +29,7 @@ import CreateActivityForm from "../../components/createActivityForm";
 // import _ from "lodash";
 import CopyLeadToList from "../../components/copyLeadToList";
 import MoveLeadToList from "../../components/moveLeadToList";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import DrawerComponent from "../../components/drawer";
 import LeadDrawerComponent from "../../components/leadDrawer";
 import LeadDetails from "./leadDetails";
@@ -1348,12 +1348,14 @@ const Leads: React.FC = () => {
         message={`Are you sure you want to delete this ${
           toBeRemoved === "lead" ? "lead" : "lead list"
         }`}
+        title="Lead"
       />
       <ConfirmationModal
         onConfirmation={leadTaskDelete}
         showModal={taskShowConfirmationModal}
         toggleModal={taskToggleModal}
         message="Are you sure you want to delete this task?"
+        title="Task"
       />
       <CopyLeadToList
         copyLeadToListModal={copyLeadToListModal}
@@ -1395,6 +1397,7 @@ const Leads: React.FC = () => {
         toggleEditModal={toggleEditModal}
         handleDrawerClick={handleDrawerClick}
       />
+      <Toaster />
     </div>
   );
 };

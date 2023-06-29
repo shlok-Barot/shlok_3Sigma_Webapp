@@ -1,6 +1,6 @@
 import React, { useState, PropsWithChildren, useEffect } from 'react';
 import { ChromePicker } from 'react-color'
-import { toast } from 'react-toastify';
+import toast, { Toaster } from "react-hot-toast";
 import { createNewCategory, getCategoryDetail, updateCategory } from '../../services/categoryService';
 
 interface CategoryData {
@@ -131,6 +131,7 @@ const AddEditCategory: React.FC<PropsWithChildren<Props>> = ({ fetchCategories, 
                 <button type='submit' className="btn btn-dark login-btnm-2">{mode === 'add' ? 'Add' : 'Update'} Category</button>
             </div>
             </div>
+            <Toaster />
         </form>
     )
 }

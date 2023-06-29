@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { updateLeadLabel } from "../services/leadService";
 
@@ -103,6 +103,7 @@ const SelectLeadLabel: React.FC<PropsWithChildren<PropsT>> = ({
           Save
         </button>
       </ModalFooter>
+      <Toaster />
     </Modal>
   );
 };

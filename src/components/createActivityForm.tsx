@@ -7,7 +7,7 @@ import {
   createActivity,
   updateActivitybyId,
 } from "../services/activityService";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setActivityList } from "../actions/actions";
 import Inputs from "./inputs";
@@ -517,6 +517,7 @@ const CreateActivityForm: React.FC<PropsWithChildren<Props>> = ({
           </form>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

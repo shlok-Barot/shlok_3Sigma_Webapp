@@ -6,7 +6,7 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import { DatePicker } from "antd";
 import { getAllTeams } from "../../services/teamsService";
 import { filterLeads } from "../../services/leadService";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setLeads } from "../../actions/actions";
 import Select from "react-select";
@@ -434,6 +434,7 @@ const LeadFilter: React.FC<PropsWithChildren<PropsT>> = ({
           </button>
         </div>
       </div>
+      <Toaster />
     </form>
   );
 };

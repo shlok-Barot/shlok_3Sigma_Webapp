@@ -7,7 +7,7 @@ import Header from '../../components/header';
 import AddProduct from './addProduct';
 import { deleteProduct, getAllProducts } from '../../services/productService';
 import ConfirmationModal from '../../components/confirmationModal';
-import { toast } from 'react-toastify';
+import toast, { Toaster } from "react-hot-toast";
 import DrawerComponent from '../../components/drawer';
 import EditProduct from './editProduct';
 import fallback_image from '../../assets/images/no-product.png';
@@ -170,8 +170,10 @@ const ProductList: React.FC = () => {
                     onConfirmation={onConfirmation}
                     showModal={showModal}
                     toggleModal={toggleModal}
+                    title="Product"
                 />
             </Container>
+            <Toaster />
         </div>
     )
 }

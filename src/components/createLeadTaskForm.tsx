@@ -6,7 +6,7 @@ import ErrorText from "./errorText";
 import * as yup from "yup";
 import update from "immutability-helper";
 import { createNewTask, updateTaskbyId } from "../services/taskService";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { setLeadTaskList } from "../actions/actions";
 
 interface taskTypeI {
@@ -505,6 +505,7 @@ const CreateLeadDetailsTaskForm: React.FC<PropsWithChildren<Props>> = ({
           </div>
         </div>
       </div>
+      <Toaster />
     </>
   );
 };

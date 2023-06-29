@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./App.css";
-import Toast from "./components/toast";
 import CategoryList from "./views/category/categoryList";
 import Content from "./views/content/content";
 import ContentDetail from "./views/content/contentDetails";
@@ -18,6 +17,7 @@ import PrivateRoute from "./routes/privateRoute";
 import axios from "axios";
 import { API_URL } from "../src/config/config";
 import Automation from "./views/automation/automation";
+import WhatsappInbox from "./views/whatsappInbox/whatsappinbox";
 
 function App() {
   const checkUser = async () => {
@@ -131,9 +131,16 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/whatsappInbox"
+            element={
+              <PrivateRoute>
+                <WhatsappInbox />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </Router>
-      <Toast />
     </>
   );
 }

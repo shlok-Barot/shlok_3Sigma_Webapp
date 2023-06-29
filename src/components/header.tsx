@@ -186,6 +186,9 @@ const Header = ({ onSearch }: any) => {
             <NavLink className="nav-link" to="/automation">
               <span>Automation</span>
             </NavLink>
+            {/* <NavLink className="nav-link" to="/whatsappInbox">
+              <span>Inbox</span>
+            </NavLink> */}
           </li>
         </ul>
       </aside>

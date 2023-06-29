@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { updateLeadStatus } from "../services/leadService";
 
@@ -89,27 +89,30 @@ const SelectLeadStatus: React.FC<PropsWithChildren<PropsT>> = ({
   };
 
   return (
-    <Modal isOpen={showStatusPopup} toggle={toggleLeadStatus}>
-      <ModalHeader toggle={toggleLeadStatus}>Select Status</ModalHeader>
-      <ModalBody>{renderStatus()}</ModalBody>
-      <ModalFooter>
-        <button
-          onClick={toggleLeadStatus}
-          type="button"
-          className="btn btn-secondary "
-        >
-          Cancel
-        </button>
-        <button
-          disabled={!selectedStatus}
-          onClick={() => onSave()}
-          type="button"
-          className="btn btn-primary "
-        >
-          Save
-        </button>
-      </ModalFooter>
-    </Modal>
+    <>
+      <Modal isOpen={showStatusPopup} toggle={toggleLeadStatus}>
+        <ModalHeader toggle={toggleLeadStatus}>Select Status</ModalHeader>
+        <ModalBody>{renderStatus()}</ModalBody>
+        <ModalFooter>
+          <button
+            onClick={toggleLeadStatus}
+            type="button"
+            className="btn btn-secondary "
+          >
+            Cancel
+          </button>
+          <button
+            disabled={!selectedStatus}
+            onClick={() => onSave()}
+            type="button"
+            className="btn btn-primary "
+          >
+            Save
+          </button>
+        </ModalFooter>
+      </Modal>
+      <Toaster />
+    </>
   );
 };
 

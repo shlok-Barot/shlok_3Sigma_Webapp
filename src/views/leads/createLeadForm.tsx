@@ -8,7 +8,7 @@ import {
   updateLead,
   putUserPreferences,
 } from "../../services/leadService";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import Inputs from "../../components/inputs";
 import { setCustomSource } from "../../actions/actions";
@@ -442,6 +442,7 @@ const CreateLeadForm: React.FC<PropsWithChildren<PropsT>> = ({
           </button>
         </div>
       </div>
+      <Toaster />
     </form>
   );
 };

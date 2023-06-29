@@ -6,7 +6,7 @@ import PlacesAutocomplete, {
     getLatLng,
   } from 'react-places-autocomplete';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import Switch from "../../components/switch";
 import { createNewContent, getContentById, updateContent } from "../../services/contentService";
 import './content.scss';
@@ -317,6 +317,7 @@ const AddEditContent: React.FC<PropsWithChildren<TabI>> = ({ activeTab, fetchCon
                     {mode === 'add' ? 'Add' : 'Update'} {activeTab === 1 ? 'message' : activeTab === 2 ? 'file' : 'page'}
                 </button>
             </div>
+            <Toaster />
         </form>
     )
 }

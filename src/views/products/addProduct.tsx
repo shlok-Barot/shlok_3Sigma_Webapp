@@ -2,7 +2,7 @@ import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 // import {fauser} from "@fortawesome/fontawesome-svg-core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { PropsWithChildren, useEffect } from "react";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { getAllCategories } from "../../services/categoryService";
 import { createNewProduct } from "../../services/productService";
 import { uploadFiles } from "../../services/utilityService";
@@ -19,7 +19,7 @@ interface CategoryI {
 }
 
 interface PropsI {
-  fetchProducts: () => void
+  fetchProducts: () => void;
 }
 
 const AddProduct: React.FC<PropsWithChildren<PropsI>> = ({ fetchProducts }) => {
@@ -43,7 +43,7 @@ const AddProduct: React.FC<PropsWithChildren<PropsI>> = ({ fetchProducts }) => {
       if (response && response.status) {
         setCategories(response?.data?.data);
       }
-    } catch (err) { }
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -69,12 +69,12 @@ const AddProduct: React.FC<PropsWithChildren<PropsI>> = ({ fetchProducts }) => {
   };
 
   function makeId(length: number) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() *
-        charactersLength));
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
   }
@@ -89,8 +89,8 @@ const AddProduct: React.FC<PropsWithChildren<PropsI>> = ({ fetchProducts }) => {
       description: productData?.description,
       price: productData?.price,
       category: productData?.category,
-      currency: 'INR',
-      unitType: 'KG'
+      currency: "INR",
+      unitType: "KG",
     };
     try {
       const response = await createNewProduct(data);
@@ -105,16 +105,16 @@ const AddProduct: React.FC<PropsWithChildren<PropsI>> = ({ fetchProducts }) => {
 
     if (files) {
       let formData = new FormData();
-      formData.append('files', files);
-      formData.append('type', 'product')
-      formData.append('product', tempID)
+      formData.append("files", files);
+      formData.append("type", "product");
+      formData.append("product", tempID);
       try {
         const fileUploadResponse = await uploadFiles(formData);
         if (fileUploadResponse && fileUploadResponse.status) {
           toast.success(fileUploadResponse?.data?.message);
         }
       } catch (err) {
-        toast.error('Error while uploading file!');
+        toast.error("Error while uploading file!");
       }
     }
   };
@@ -125,16 +125,16 @@ const AddProduct: React.FC<PropsWithChildren<PropsI>> = ({ fetchProducts }) => {
     });
 
   return (
-    <form id="addProductForm" onSubmit={(evt) => onAddProduct(evt)} className="add_product">
+    <form
+      id="addProductForm"
+      onSubmit={(evt) => onAddProduct(evt)}
+      className="add_product"
+    >
       <div className="form-container">
         <div className="d-flex justify-content-between align-items-center">
           <div className="image-upload">
             <label htmlFor="file-input">
-              <FontAwesomeIcon
-                icon={faPlusSquare}
-                color="#3da6f7"
-                size="lg"
-              />
+              <FontAwesomeIcon icon={faPlusSquare} color="#3da6f7" size="lg" />
             </label>
             <input
               onChange={(evt) => handleImageUpload(evt)}
@@ -213,7 +213,7 @@ const AddProduct: React.FC<PropsWithChildren<PropsI>> = ({ fetchProducts }) => {
           </button>
         </div>
       </div>
-
+      <Toaster />
     </form>
   );
 };

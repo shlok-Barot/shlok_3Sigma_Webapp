@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as yup from "yup";
 import update from "immutability-helper";
 // import { updateProfile } from '../../services/authServices';
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../config/config";
 import axios from "axios";
@@ -141,6 +141,7 @@ const Signup: React.FC = () => {
 
   return (
     <div className="container">
+      <Toaster />
       <div className="row justify-content-center login_section sign_up">
         <div className="col-12 col-md-6 col-lg-5 col-xl-5 mt-2 login_card">
           <div className="login-card card">

@@ -1,129 +1,136 @@
-import React, { useEffect, PropsWithChildren } from 'react';
+import React, { useEffect, PropsWithChildren } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-solid-svg-icons";
-import { getAllCategories } from '../../services/categoryService';
-import { getProductDetails, updateProduct } from '../../services/productService';
-import { toast } from 'react-toastify';
+import { getAllCategories } from "../../services/categoryService";
+import {
+  getProductDetails,
+  updateProduct,
+} from "../../services/productService";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Product {
-    productName: string;
-    description: string;
-    price: string;
-    category: string;
+  productName: string;
+  description: string;
+  price: string;
+  category: string;
 }
 
 interface CategoryI {
-    _id: string;
-    name: string;
+  _id: string;
+  name: string;
 }
 
 interface Props {
-    selectedProduct: string,
-    fetchProducts: () => void,
-    setShowDrawer: React.Dispatch<React.SetStateAction<boolean>>,
-    onDelete: any
+  selectedProduct: string;
+  fetchProducts: () => void;
+  setShowDrawer: React.Dispatch<React.SetStateAction<boolean>>;
+  onDelete: any;
 }
 
-const EditProduct: React.FC<PropsWithChildren<Props>> = ({ selectedProduct, onDelete, fetchProducts, setShowDrawer }) => {
+const EditProduct: React.FC<PropsWithChildren<Props>> = ({
+  selectedProduct,
+  onDelete,
+  fetchProducts,
+  setShowDrawer,
+}) => {
+  const [productData, setProductData] = React.useState<Product>({
+    productName: "",
+    description: "",
+    price: "",
+    category: "",
+  });
+  const [categories, setCategories] = React.useState<Array<CategoryI>>([]);
+  const [files, setFiles] = React.useState<File>();
 
-    const [productData, setProductData] = React.useState<Product>({
-        productName: "",
-        description: "",
-        price: "",
-        category: "",
-    });
-    const [categories, setCategories] = React.useState<Array<CategoryI>>([]);
-    const [files, setFiles] = React.useState<File>();
-
-    const fetchCategories = async () => {
-        try {
-          const response = await getAllCategories({
-            orderBy: "_id",
-            isAscending: false,
-            page: 1,
-            perPage: 15,
-          });
-          if (response && response.status) {
-            setCategories(response?.data?.data);
-          }
-        } catch (err) { }
-      };
-
-      const fetchProductById = async () => {
-        try {
-            const res = await getProductDetails(selectedProduct);
-            if (res && res.status) {
-                console.log(res?.data?.data);
-                setProductData({
-                    ...productData,
-                    productName: res?.data?.data?.name,
-                    description: res?.data?.data?.description,
-                    price: res?.data?.data?.price,
-                    category: res?.data?.data?.category,
-                });
-            }
-        } catch(err) { }
+  const fetchCategories = async () => {
+    try {
+      const response = await getAllCategories({
+        orderBy: "_id",
+        isAscending: false,
+        page: 1,
+        perPage: 15,
+      });
+      if (response && response.status) {
+        setCategories(response?.data?.data);
       }
+    } catch (err) {}
+  };
 
-      useEffect(() => {
-        fetchCategories();
-        fetchProductById();
-      }, []);
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-      ) => {
-        const { name, value } = e.currentTarget;
+  const fetchProductById = async () => {
+    try {
+      const res = await getProductDetails(selectedProduct);
+      if (res && res.status) {
+        console.log(res?.data?.data);
         setProductData({
           ...productData,
-          [name]: value,
+          productName: res?.data?.data?.name,
+          description: res?.data?.data?.description,
+          price: res?.data?.data?.price,
+          category: res?.data?.data?.category,
         });
-    };
+      }
+    } catch (err) {}
+  };
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const fileList = e.target.files;
+  useEffect(() => {
+    fetchCategories();
+    fetchProductById();
+  }, []);
 
-        if (!fileList) return;
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.currentTarget;
+    setProductData({
+      ...productData,
+      [name]: value,
+    });
+  };
 
-        setFiles(fileList[0]);
-    };
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = e.target.files;
 
-    const renderCategories = () =>
+    if (!fileList) return;
+
+    setFiles(fileList[0]);
+  };
+
+  const renderCategories = () =>
     categories?.map((category) => {
       return <option value={category?._id}>{category?.name}</option>;
     });
 
-    const onEditProduct = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const data = {
-            description: productData?.description,
-            price: productData?.price,
-            currency: 'INR',
-            unitType: 'KG'
-        };
-        try {
-            const response = await updateProduct(data, selectedProduct);
-            if (response && response.status) {
-                toast.success(response?.data?.message);
-                setShowDrawer(false);
-                fetchProducts();
-            }
-        } catch (err) {
-            toast.error("Error while updating product!");
-        }
+  const onEditProduct = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = {
+      description: productData?.description,
+      price: productData?.price,
+      currency: "INR",
+      unitType: "KG",
+    };
+    try {
+      const response = await updateProduct(data, selectedProduct);
+      if (response && response.status) {
+        toast.success(response?.data?.message);
+        setShowDrawer(false);
+        fetchProducts();
+      }
+    } catch (err) {
+      toast.error("Error while updating product!");
     }
+  };
 
-    return (
-        <form id="addProductForm" onSubmit={(evt) => onEditProduct(evt)} className="add_product">
+  return (
+    <form
+      id="addProductForm"
+      onSubmit={(evt) => onEditProduct(evt)}
+      className="add_product"
+    >
       <div className="form-container">
         <div className="d-flex justify-content-between align-items-center">
           <div className="image-upload">
             <label htmlFor="file-input">
-              <FontAwesomeIcon
-                icon={faPlusSquare}
-                color="#3da6f7"
-                size="lg"
-              />
+              <FontAwesomeIcon icon={faPlusSquare} color="#3da6f7" size="lg" />
             </label>
             <input
               onChange={(evt) => handleImageUpload(evt)}
@@ -210,10 +217,9 @@ const EditProduct: React.FC<PropsWithChildren<Props>> = ({ selectedProduct, onDe
           </button>
         </div>
       </div>
-
+      <Toaster />
     </form>
-    )
-
-}
+  );
+};
 
 export default EditProduct;

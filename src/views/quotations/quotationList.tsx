@@ -18,7 +18,7 @@ import {
 import AddEditQuotation from "./addQuotation";
 import DrawerComponent from "../../components/drawer";
 import ConfirmationModal from "../../components/confirmationModal";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import "./quotation.scss";
 import { GoPlus } from "react-icons/go";
 import { BsCurrencyRupee } from "react-icons/bs";
@@ -277,8 +277,10 @@ const QuotationList: React.FC = () => {
           showModal={showConfirmation}
           toggleModal={toggleModal}
           message={"Are you sure you want to delete this quotation"}
+          title="Quotation"
         />
       </Container>
+      <Toaster />
     </div>
   );
 };

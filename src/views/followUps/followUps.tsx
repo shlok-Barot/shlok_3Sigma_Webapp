@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import ConfirmationModal from "../../components/confirmationModal";
 import CreateTaskForm from "../../components/createTaskForm";
 import DrawerComponent from "../../components/drawer";
@@ -379,8 +379,10 @@ const FollowUps: React.FC = () => {
           onConfirmation={onConfirmation}
           showModal={showConfirmationModal}
           toggleModal={toggleModal}
+          title="Task"
         />
       </section>
+      <Toaster />
     </div>
   );
 };

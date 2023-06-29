@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from "react";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { createNewNote } from "../services/noteService";
 import ErrorText from "./errorText";
 import { useDispatch, useSelector } from "react-redux";
@@ -89,6 +89,7 @@ const CreateNoteForm: React.FC<PropsWithChildren<Props>> = ({
           </button>
         </div>
       </form>
+      <Toaster />
     </>
   );
 };

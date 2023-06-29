@@ -12,6 +12,7 @@ interface Props {
   userListData: any;
   delayMinMaxMsg: string;
   onSaveDrawerClose: (obj: any) => void;
+  updateActionDays: string;
 }
 const ActionCommonDrawer: React.FC<PropsWithChildren<Props>> = ({
   actionDrawerTitle,
@@ -25,6 +26,7 @@ const ActionCommonDrawer: React.FC<PropsWithChildren<Props>> = ({
   userListData,
   delayMinMaxMsg,
   onSaveDrawerClose,
+  updateActionDays,
 }) => {
   const selectLabel =
     actionDrawerTitle === "Change status"
@@ -55,7 +57,7 @@ const ActionCommonDrawer: React.FC<PropsWithChildren<Props>> = ({
       : actionDrawerTitle === "Delay"
       ? "Select days"
       : "";
- 
+
   return (
     <div className="row">
       <div className="form-group action_select">
@@ -90,6 +92,7 @@ const ActionCommonDrawer: React.FC<PropsWithChildren<Props>> = ({
             <select
               name={selectedAction}
               className="form-select"
+              value={updateActionDays}
               onChange={(e: any) => SubActionSelectOnchange(e)}
             >
               <option value="">{selectOption}</option>

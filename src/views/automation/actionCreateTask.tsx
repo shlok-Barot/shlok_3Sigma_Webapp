@@ -29,7 +29,7 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
 
   const [taskData, setTaskData] = useState<taskTypeI>({
     type: "",
-    repeat: "",
+    repeat: "repeat",
     assignedTo: "",
     notes: "",
   });
@@ -75,12 +75,21 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
 
   useEffect(() => {
     if (Object.values(addUpdateModalValue).length > 0) {
-      setTaskData({
-        type: addUpdateModalValue.type,
-        notes: addUpdateModalValue.notes,
-        assignedTo: addUpdateModalValue?.assignedTo[0]?._id,
-        repeat: addUpdateModalValue.repeat,
-      });
+      if (addUpdateModalValue?.assignedTo) {
+        setTaskData({
+          type: addUpdateModalValue.type,
+          notes: addUpdateModalValue.notes,
+          assignedTo: addUpdateModalValue?.assignedTo[0]?._id,
+          repeat: addUpdateModalValue.repeat,
+        });
+      } else {
+        setTaskData({
+          type: addUpdateModalValue.type,
+          notes: addUpdateModalValue.notes,
+          assignedTo: "",
+          repeat: addUpdateModalValue.repeat,
+        });
+      }
     }
   }, [addUpdateModalValue]);
 
@@ -153,7 +162,7 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
   return (
     <>
       <div className="popup-section-1 popup-section-2 popup-section-3">
-        <div className="">
+        <div>
           <div className="form-group">
             <label className="form-label">Task Type</label>
             <select
@@ -180,11 +189,15 @@ const ActionCreateTask: React.FC<PropsWithChildren<Props>> = ({
               name="repeat"
               className="form-select"
             >
-              <option value="">Select When to Repeat</option>
+              <option value="repeat">Don't Repeat</option>
               {repeatOptions?.map((option: any, i: number) => (
-                <option value={option.value} key={i}>
-                  {option?.name}
-                </option>
+                <>
+                  {option.value !== "repeat" && (
+                    <option value={option.value} key={i}>
+                      {option?.name}
+                    </option>
+                  )}
+                </>
               ))}
             </select>
             {errors.repeat ? <ErrorText message={errors?.repeat} /> : ""}

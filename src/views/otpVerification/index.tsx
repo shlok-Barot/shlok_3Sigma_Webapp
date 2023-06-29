@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState, useMemo } from "react";
 import OtpInput from "react-otp-input";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { setLogId } from "../../actions/actions";
 import Timer from "../../components/timer";
 import { generateOtp, signIn } from "../../services/authServices";
-import { getUserPreferences } from "../../services/userService";
+// import { getUserPreferences } from "../../services/userService";
 import { useCountdown } from "../../utils/countdown";
 import {
   userPreferences,
@@ -159,6 +159,7 @@ export const OtpVerification = () => {
 
   return (
     <div className="container">
+      <Toaster />
       <div className="row justify-content-center otp_section">
         <div className="col-12 col-md-6 col-lg-5 col-xl-5 mt-5 login_card">
           <div className="card login-card">

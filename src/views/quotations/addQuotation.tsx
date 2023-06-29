@@ -15,7 +15,7 @@ import {
   createQuotations,
   getQuotationDetails,
 } from "../../services/quotationService";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { Row, Col } from "reactstrap";
 import "./quotation.scss";
 interface Quotation {
@@ -414,6 +414,7 @@ const AddEditQuotation: React.FC<propT> = ({
           </button>
         </div>
       </div>
+      <Toaster />
     </form>
   );
 };

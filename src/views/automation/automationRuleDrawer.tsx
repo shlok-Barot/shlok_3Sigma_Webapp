@@ -17,9 +17,10 @@ import {
 } from "../../services/automationService";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import ErrorText from "../../components/errorText";
 import update from "immutability-helper";
+import ConfirmationModal from "../../components/confirmationModal";
 
 interface autoFormI {
   name: string;
@@ -73,7 +74,9 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
   const [userListData, setUserListData] = useState<any>([]);
   const [delayMinMaxMsg, setDelayMinMaxMsg] = useState<string>("");
   const [actionDaysData, setActionDaysData] = useState<any>([]);
-  console.log(updateAutomationDetail, "updateAutomationDetail");
+  const [updateActionDays, setUpdateActionDays] = useState<string>("");
+  const [updateTaskActionData, setUpdateTaskActionData] = useState<any>({});
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
   useEffect(() => {
     setStatusData(StoreData?.user?.userPreferences?.status);
@@ -84,12 +87,21 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
 
   useEffect(() => {
     if (isUpdateAuto) {
+      let target_value;
+      if (
+        updateAutomationDetail.condition.targetValues[0].split(",").length > 1
+      ) {
+        target_value = "any";
+      } else {
+        target_value = updateAutomationDetail.condition.targetValues[0];
+      }
       setAutomationData({
         name: updateAutomationDetail.name,
         description: updateAutomationDetail.description,
         event: updateAutomationDetail.event,
-        targetValues: updateAutomationDetail?.condition?.targetValues[0],
+        targetValues: target_value,
       });
+
       let isAutoEvent = [
         "edit_lead",
         "create_incoming_activity",
@@ -98,6 +110,40 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
         "create_quotation",
         "edit_quotation",
       ];
+      let ArrayData;
+      ArrayData = Object.assign([], updateAutomationDetail.action);
+      let tempArray: any = [];
+
+      if (ArrayData.length > 0) {
+        for (let i = 0; i < ArrayData.length; i++) {
+          let tempObj = ArrayData[i][`day_${i}`][0];
+          tempArray.push(tempObj);
+        }
+      } else {
+        ArrayData = updateAutomationDetail.action;
+        for (const key in ArrayData) {
+          if (Object.hasOwnProperty.call(ArrayData, key)) {
+            if (key.startsWith("day_")) {
+              const delayValue = parseInt(key.substring(4));
+              if (delayValue > 0) {
+                tempArray.push({
+                  type: "delay",
+                  data: {
+                    delay: delayValue - 1,
+                  },
+                });
+              }
+              setDelayValue(delayValue - 1);
+            }
+            tempArray = tempArray.concat(ArrayData[key]);
+          }
+        }
+      }
+      // tempArray.forEach((el: any) => {
+      //   el.actionName = el.type;
+      // });
+      setAddActionForm(tempArray);
+      setActionDaysData(tempArray);
       if (
         !(
           isAutoEvent.filter((x: string) => x === updateAutomationDetail.event)
@@ -141,8 +187,11 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
 
   const removeAction = (i: number) => {
     let tempArray: any = [...addActionForm];
+    let tempDayArray: any = [...actionDaysData];
     tempArray.splice(i, 1);
+    tempDayArray.splice(i, 1);
     setAddActionForm(tempArray);
+    setActionDaysData(tempDayArray);
     setDelayValue(1);
   };
 
@@ -209,11 +258,18 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
         ? "assignToUser"
         : selectedAction;
     let tempArray: any = [...actionDaysData];
+    let DataExist = tempArray.filter((x: any) => x.type == name);
     let tempObj = {
       type: name,
       data: { [selectName]: value },
     };
-    tempArray.push(tempObj);
+    if (DataExist.length > 0) {
+      let index = tempArray.findIndex((x: any) => x.type == name);
+      tempArray.splice(index, 1, tempObj);
+    } else {
+      tempArray.push(tempObj);
+    }
+    setUpdateActionDays(value);
     setActionDaysData(tempArray);
   };
 
@@ -224,46 +280,95 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
     const { name, value } = e.currentTarget;
     let data = automationActionData.filter((x: any) => x.value === value)[0]
       .name;
+    setActionDrawerTitle(data);
 
-    if (value === "wait") {
-      setActionDrawerTitle("Delay");
-    } else {
-      setActionDrawerTitle(data);
-    }
     setSelectedAction(value);
-    let tempArray: any = [...addActionForm];
-    tempArray[i] = { [name]: value };
-    setAddActionForm(tempArray);
+    if (addActionForm.filter((x: any) => x.type === value).length > 0) {
+      alert(`${data} is already selected.`);
+    } else {
+      let tempArray: any = [...addActionForm];
+      tempArray[i] = { [name]: value };
+      setAddActionForm(tempArray);
 
-    for (let i = 0; i < tempArray.length; i++) {
-      if (
-        tempArray[i].actionName === "move_to_list" ||
-        tempArray[i].actionName === "copy_to_list"
-      ) {
-        handleGetLeadList();
+      for (let i = 0; i < tempArray.length; i++) {
+        if (
+          tempArray[i].type === "move_to_list" ||
+          tempArray[i].type === "copy_to_list"
+        ) {
+          handleGetLeadList();
+        }
+        if (
+          tempArray[i].type === "push_notification" ||
+          tempArray[i].type === "assign_lead"
+        ) {
+          handleGetUserOrganization();
+        }
       }
-      if (
-        tempArray[i].actionName === "push_notification" ||
-        tempArray[i].actionName === "assign_lead"
-      ) {
-        handleGetUserOrganization();
-      }
+      setActionBaseDrawer(true);
     }
-    setActionBaseDrawer(true);
   };
 
   const onSaveDrawerClose = (objData: any) => {
     if (Object.keys(objData).length > 0) {
       let tempArray: any = [...actionDaysData];
+      let DataExist = tempArray.filter((x: any) => x.type == selectedAction);
       let tempObj = {
         type: selectedAction,
         data: objData,
       };
-      tempArray.push(tempObj);
+      if (DataExist.length > 0) {
+        let index = tempArray.findIndex((x: any) => x.type == selectedAction);
+        tempArray.splice(index, 1, tempObj);
+      } else {
+        tempArray.push(tempObj);
+      }
       setActionDaysData(tempArray);
     }
-
     setActionBaseDrawer(false);
+  };
+  const getCommaSeparatedId = (event: string) => {
+    let comma_ids = "";
+    if (event === "create_lead") {
+      comma_ids = sourceByData
+        .map((item: any) => {
+          return item._id;
+        })
+        .join(",");
+    } else if (event === "status_change" || event === "label_change") {
+      comma_ids = statusLabelData
+        .map((item: any) => {
+          return item.value;
+        })
+        .join(",");
+    } else if (event === "view_page") {
+      comma_ids = viewPageData
+        .map((item: any) => {
+          return item._id;
+        })
+        .join(",");
+    } else if (event === "view_file") {
+      comma_ids = viewFileData
+        .map((item: any) => {
+          return item._id;
+        })
+        .join(",");
+    } else if (event === "create_task") {
+      comma_ids = taskData
+        .map((item: any) => {
+          return item.value;
+        })
+        .join(",");
+    } else if (event === "edit_task") {
+      comma_ids = "toBePerformAt,isCompleted";
+    } else if (event === "create_activity") {
+      comma_ids = activityListData
+        .map((item: any) => {
+          return item.value;
+        })
+        .join(",");
+    }
+
+    return comma_ids;
   };
   const handleAutoFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -284,6 +389,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
         setIsShowAutoEvent(false);
       }
     }
+
     setAutomationData({
       ...automationData,
       [name]: value,
@@ -365,36 +471,47 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
     const isFormValid = await schema.isValid(automationData, {
       abortEarly: false,
     });
-    // debugger;
     if (isFormValid) {
       try {
-        let tempDaysData: any = [];
-        for (let i = 0; i < actionDaysData.length; i++) {
-          let day_no;
-          let index = actionDaysData.findIndex((x: any) => x.type == "delay");
-          if (actionDaysData[i].type === "delay") {
-            day_no = i + actionDaysData[i].data.delay;
-          } else {
-            day_no = i;
-          }
-          if (actionDaysData[i].type !== "delay") {
+        let tempDaysData: any = {};
+        let tempArrayDaysData: any = [];
+        let targetValues =
+          automationData.targetValues === "any"
+            ? getCommaSeparatedId(automationData?.event)
+            : automationData.targetValues;
+        const delayIndex = actionDaysData.findIndex(
+          (obj: any) => obj.type === "delay"
+        );
+        if (delayIndex === -1) {
+          for (let i = 0; i < actionDaysData.length; i++) {
             let tempObj = {
-              [`day_${day_no}`]: [actionDaysData[i]],
+              [`day_${i}`]: [actionDaysData[i]],
             };
-            tempDaysData.push(tempObj);
+            tempArrayDaysData.push(tempObj);
           }
+        } else {
+          const delayValue = actionDaysData[delayIndex]?.data?.delay;
+          if (delayIndex !== 0) {
+            tempDaysData[`day_${0}`] = actionDaysData.slice(0, delayIndex);
+          }
+          tempDaysData[`day_${delayValue + 1}`] = actionDaysData.slice(
+            delayIndex + 1
+          );
         }
+        let finalAction = delayIndex === -1 ? tempArrayDaysData : tempDaysData;
         let Objdata: any = {
           name: automationData.name,
           description: automationData.description,
-          event: automationData.event,
+          ...(!isUpdateAuto && {
+            event: automationData.event,
+          }),
           condition: {
             [automationData.event === "edit_task" ? "field" : "targetValues"]:
               automationData.event === "edit_task"
-                ? automationData.targetValues
-                : [automationData.targetValues],
+                ? targetValues
+                : [targetValues],
           },
-          action: Object.assign({}, tempDaysData),
+          action: Object.assign({}, finalAction),
         };
         let response;
         if (isUpdateAuto) {
@@ -411,7 +528,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
           handleGetAutomationList();
         }
       } catch (err) {
-        toast.error("error while creating new lead!");
+        toast.error("error while creating rule!");
       }
     } else {
       schema.validate(automationData, { abortEarly: false }).catch((err) => {
@@ -433,16 +550,40 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
     }
   };
 
+  const onConfirmationDelete = () => {
+    setShowDeleteModal(false);
+    onAutomationDelete(updateAutomationDetail._id);
+  };
+
+  const DeleteModalToggle = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
+
+  const ShowInfoAction = (value: string, i: number) => {
+    let tempValue: any;
+    let updateData = actionDaysData.find((x: any) => x.type === value);
+    if (value === "create_task") {
+      setUpdateTaskActionData(updateData.data);
+    } else {
+      tempValue = Object.values(updateData.data)[0];
+      setUpdateActionDays(tempValue);
+    }
+    let data = automationActionData.filter((x: any) => x.value === value)[0]
+      .name;
+
+    setActionDrawerTitle(data);
+    setSelectedAction(value);
+    setActionBaseDrawer(true);
+  };
   return (
     <div className="row auto_rule_form">
+      <Toaster />
       {isUpdateAuto && (
         <div style={{ textAlign: "right" }}>
           <i
             className="fa fa-trash-o"
             style={{ color: "red", fontSize: "23px", cursor: "pointer" }}
-            onClick={() => {
-              onAutomationDelete(updateAutomationDetail._id);
-            }}
+            onClick={DeleteModalToggle}
           />
         </div>
       )}
@@ -535,7 +676,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
                 value={automationData?.targetValues}
                 onChange={(e) => handleAutoFormChange(e)}
               >
-                <option value="">Select </option>
+                <option value="">Select</option>
                 {automationData?.event === "create_lead" ? (
                   <>
                     {sourceByData.map((item: any, i: number) => {
@@ -549,6 +690,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
                         </>
                       );
                     })}
+                    <option value="any">Any</option>
                   </>
                 ) : automationData?.event === "status_change" ||
                   automationData?.event === "label_change" ? (
@@ -560,6 +702,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
                         </option>
                       );
                     })}
+                    <option value="any">Any</option>
                   </>
                 ) : automationData?.event === "view_page" ? (
                   <>
@@ -570,6 +713,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
                         </option>
                       );
                     })}
+                    <option value="any">Any</option>
                   </>
                 ) : automationData?.event === "view_file" ? (
                   <>
@@ -584,6 +728,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
                         </>
                       );
                     })}
+                    <option value="any">Any</option>
                   </>
                 ) : automationData?.event === "create_task" ? (
                   <>
@@ -594,11 +739,13 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
                         </option>
                       );
                     })}
+                    <option value="any">Any</option>
                   </>
                 ) : automationData?.event === "edit_task" ? (
                   <>
                     <option value={"toBePerformAt"}>toBePerformAt</option>
                     <option value={"isCompleted"}>isCompleted</option>
+                    <option value="any">Any</option>
                   </>
                 ) : automationData?.event === "create_activity" ? (
                   <>
@@ -609,6 +756,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
                         </option>
                       );
                     })}
+                    <option value="any">Any</option>
                   </>
                 ) : null}
               </select>
@@ -635,10 +783,10 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
           <div className="col-md-8 auto_select_action" key={i}>
             <label>Action {i + 1} :</label>
             <select
-              name="actionName"
+              name="type"
               className="form-select"
-              value={el?.actionName || ""}
-              onChange={(e) => handleActionChange(e, i)}
+              value={el?.type || ""}
+              onChange={(e: any) => handleActionChange(e, i)}
             >
               <option value="">Select action</option>
               {automationActionData.map((data: any, j: number) => {
@@ -655,12 +803,16 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
               className="cancel_div"
               onClick={() => removeAction(i)}
             />
+            <i
+              className="bi bi-info-circle show_action"
+              onClick={() => ShowInfoAction(el?.type, i)}
+            ></i>
           </div>
         ))}
       </div>
       <div className="d-flex justify-content-center auto_form_btn">
         <button type="reset" className="btn btn-primary" onClick={handleSubmit}>
-          Create Automation Rule
+          {isUpdateAuto ? "Update" : "Create"} Automation Rule
         </button>
       </div>
       <div className="automatic_rule_drawer">
@@ -672,7 +824,7 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
         >
           {actionDrawerTitle === "Create task" ? (
             <ActionCreateTask
-              addUpdateModalValue={{}}
+              addUpdateModalValue={updateTaskActionData}
               onSaveDrawerClose={onSaveDrawerClose}
             />
           ) : (
@@ -688,9 +840,17 @@ const AutomationRuleDrawer: React.FC<PropsWithChildren<AutoDataI>> = ({
               userListData={userListData}
               delayMinMaxMsg={delayMinMaxMsg}
               onSaveDrawerClose={onSaveDrawerClose}
+              updateActionDays={updateActionDays}
             />
           )}
         </DrawerComponent>
+        <ConfirmationModal
+          onConfirmation={onConfirmationDelete}
+          showModal={showDeleteModal}
+          toggleModal={DeleteModalToggle}
+          message={"Are you sure you want to delete this rule."}
+          title="Rule"
+        />
       </div>
     </div>
   );

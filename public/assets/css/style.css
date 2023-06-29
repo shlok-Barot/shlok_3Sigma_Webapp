@@ -47,6 +47,8 @@
 :root {
   scroll-behavior: smooth;
   font-family: "Gilroy-Medium";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -54,6 +56,8 @@ body {
   background: #ebf0f4;
   color: #000000;
   font-family: "Gilroy-Medium";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -4242,6 +4246,7 @@ hr.half-width {
 }
 .auto-section-23-sub-1 p {
   font-size: 14px;
+  color: #7f7f7f;
 }
 .auto-section-3 .auto_label {
   font-size: 16px;
@@ -4257,9 +4262,9 @@ hr.half-width {
   margin-right: 10px;
   height: 19px;
 }
-.auto-section-3 .rs-toggle {
+.auto-section-3-toggle .rs-toggle {
   float: right;
-  margin-top: 5px;
+  margin: 15px;
 }
 .auto_rule_form {
   margin: 10px 0;
@@ -4272,7 +4277,7 @@ hr.half-width {
 .auto_rule_form .and {
   font-size: 14px;
   font-family: "Gilroy-Bold";
-  color: #75787A;
+  color: #75787a;
 }
 .auto_rule_form .and_source {
   font-size: 18px;
@@ -4374,7 +4379,7 @@ hr.half-width {
   height: 42px;
 }
 .auto_select label {
-  margin-top: 15px;
+  margin-top: 20px;
 }
 .action_select {
   margin-top: 1rem;
@@ -4387,7 +4392,7 @@ hr.half-width {
   display: inline-block;
 }
 .auto_dot_plus img {
-  padding: 4px 5px;
+  padding: 6px 6px;
   cursor: pointer;
 }
 .add_new_plus {
@@ -4483,8 +4488,52 @@ hr.half-width {
   padding-top: 5px;
   cursor: pointer;
 }
-.disabled_input{
+.disabled_input {
   background-color: #dddddd !important;
   cursor: not-allowed !important;
 }
+.show_action {
+  font-size: 18px;
+  margin-left: 6px;
+  cursor: pointer;
+}
 /* Automation screen Ui Css End */
+/* Delete confirmation model css Start */
+.delete_modal .btn-close {
+  display: none;
+}
+.delete_modal .modal-content {
+  border-radius: 10px;
+}
+.delete_modal .modal-body {
+  background: #ebf0f4;
+  border-radius: 10px;
+}
+.delete_modal_body h4 {
+  font-size: 24px;
+  color: #000;
+  font-family: "Gilroy-Medium";
+  text-align: center;
+}
+.delete_modal_body p{
+  text-align: center;
+    font-size: 16px;
+    color: #75787A;
+    font-family: 'Gilroy-Bold';
+}
+.delete_modal_body .delete_btn {
+  background: #ffff;
+  border-color: #ffff;
+  color: #000;
+  width: 141px;
+  border-radius: 10px;
+  height: 43px;
+  font-size: 18px;
+}
+.delete_modal_body .delete_div_btn {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+/* Delete confirmation model css End */
